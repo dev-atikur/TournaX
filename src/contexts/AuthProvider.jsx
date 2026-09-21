@@ -1,61 +1,74 @@
-import React, { createContext, useEffect, useState } from "react";
-
-import api from "../api/api";
-import axios from "axios";
-
-export const AuthContext = createContext();
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { AuthContext } from "./AuthContexts";
+import authApi from "../api/auth.api";
+import { extractEntity } from "../utils/errors";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      try {
-       const response = await axios.post(
-         "http://localhost:5000/api/auth/register",
-         {
-           username: "darkwolf91",
-           email: "darkwolf91@example.com",
-           password: "Wolf@58392",
-           ffName: "亗DΛRK々WOLF",
-           ffUid: "19384756210",
-         },
-       );
-
-       console.log(response.data);
-      } catch (error) {
-        console.log("Auth check:", {
-          status: error.response?.status,
-          data: error.response?.data,
-          message: error.message,
-        });
-
-        // Login করা না থাকলে user null থাকবে
-        if (error.response?.status === 401) {
-          setUser(null);
-        } else {
-          console.error("Auth check failed:", error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getCurrentUser();
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await authApi.me();
+      setUser(extractEntity(response.data));
+      return extractEntity(response.data);
+    } catch {
+      setUser(null);
+      return null;
+    }
   }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        loading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  useEffect(() => {
+    let active = true;
+    const bootstrap = async () => {
+      try {
+        const response = await authApi.me();
+        if (active) setUser(extractEntity(response.data));
+      } catch {
+        if (active) setUser(null);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+    bootstrap();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const login = useCallback(async (payload) => {
+    const response = await authApi.login(payload);
+    const data = extractEntity(response.data);
+    if (data && (data.id || data._id || data.email)) {
+      setUser(data);
+    } else {
+      await refreshUser();
+    }
+    return response.data;
+  }, [refreshUser]);
+
+  const logout = useCallback(async () => {
+    try {
+      await authApi.logout();
+    } finally {
+      setUser(null);
+    }
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      user,
+      setUser,
+      loading,
+      isAuthenticated: Boolean(user),
+      refreshUser,
+      login,
+      logout,
+    }),
+    [user, loading, refreshUser, login, logout],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

@@ -1,13 +1,14 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Header from '../components/layouts/Header'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Header from "../components/layouts/Header";
 
 export default function AppLayout() {
-  
   return (
-    <figure className="flex flex-col h-screen w-screen bg-background *:text-textPrimary overflow-hidden">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-textPrimary">
       <Header />
-      <Outlet />
-    </figure>
+      <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+        <Outlet />
+      </div>
+    </div>
   );
 }

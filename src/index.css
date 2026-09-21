@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: #08090d;
+    color: #f5f7fa;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ffb800;
+    outline-offset: 2px;
+  }
+}
+
 
 
 /* ===== Custom Scrollbar ===== */

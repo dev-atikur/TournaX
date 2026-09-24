@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Trophy } from "lucide-react";
 import { FaInstagram, FaTelegramPlane } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
+import { profilePath } from "../../utils/profile";
+import logo from "../../assets/logo.png";
 
 export default function Footer() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <footer className="border-t border-border bg-surfaceHard">
@@ -12,15 +14,19 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
-                <Trophy className="h-5 w-5 text-primary" />
-              </div>
-              <span className="text-xl font-bold">
-                Play With <span className="text-primary">Fair</span>
+              <img src={logo} alt="" className="h-10 w-auto object-contain" />
+              <span>
+                <span className="block text-xl font-bold">
+                  Play With <span className="text-primary">Fair</span>
+                </span>
+                <span className="text-xs font-medium uppercase tracking-[0.16em] text-textMuted">
+                  Play. Compete. Win. Fair.
+                </span>
               </span>
             </Link>
             <p className="mt-4 max-w-md text-sm leading-6 text-textMuted">
-              A fair and competitive Free Fire tournament platform.
+              A professional Free Fire tournament platform built for fair competition, verified results, and
+              trusted rooms.
             </p>
             <div className="mt-5 flex items-center gap-2">
               <a
@@ -58,7 +64,10 @@ export default function Footer() {
               {isAuthenticated ? (
                 <>
                   <li><Link className="hover:text-primary" to="/dashboard">Dashboard</Link></li>
-                  <li><Link className="hover:text-primary" to="/profile">Profile</Link></li>
+                  {user?.username ? (
+                    <li><Link className="hover:text-primary" to={profilePath(user)}>Profile</Link></li>
+                  ) : null}
+                  <li><Link className="hover:text-primary" to="/settings">Settings</Link></li>
                 </>
               ) : (
                 <>
@@ -72,8 +81,12 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-10 border-t border-border pt-6 text-sm text-textMuted">
-          © {new Date().getFullYear()} Play With Fair. All rights reserved.
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6 text-sm text-textMuted">
+          <span>© {new Date().getFullYear()} Play With Fair. All rights reserved.</span>
+          <span className="inline-flex items-center gap-1.5 text-xs">
+            <Trophy className="h-3.5 w-3.5 text-primary" />
+            PWF · Free Fire Tournaments
+          </span>
         </div>
       </div>
     </footer>

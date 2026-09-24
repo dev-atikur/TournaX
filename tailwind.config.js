@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+
   theme: {
     extend: {
       colors: {
@@ -23,17 +25,22 @@ module.exports = {
         textDisabled: "#555b69",
         textDark: "#08090d",
 
-        // ===== Primary Brand =====
+        // ===== Primary Brand (PWF Yellow) =====
         primary: "#ffb800",
         primarySoft: "#ffd666",
         primaryHover: "#e5a600",
-        primaryMuted: "#6b4d00",
+        primaryMuted: "#5c4300",
+
+        // ===== Gold / Brand Highlight =====
+        gold: "#ffb800",
+        goldSoft: "#ffd666",
+        goldHover: "#e5a600",
 
         // ===== Secondary Brand =====
-        secondary: "#6366f1",
-        secondarySoft: "#818cf8",
-        secondaryHover: "#4f46e5",
-        secondaryMuted: "#312e81",
+        secondary: "#ffd666",
+        secondarySoft: "#ffe9a3",
+        secondaryHover: "#ffb800",
+        secondaryMuted: "#5c4300",
 
         // ===== UI =====
         hover: "#1d202a",
@@ -46,25 +53,23 @@ module.exports = {
         // ===== Status =====
         success: "#22c55e",
         successSoft: "#14532d",
-
         warning: "#f59e0b",
         warningSoft: "#78350f",
-
         error: "#ef4444",
         errorSoft: "#7f1d1d",
-
         info: "#38bdf8",
         infoSoft: "#0c4a6e",
 
         // ===== Gaming / Accent =====
-        blue: "#3b82f6",
-        purple: "#a855f7",
-        pink: "#ec4899",
+        blue: "#ffb800",
+        purple: "#ffb800",
+        pink: "#ffd666",
 
         // ===== Shadow =====
         shadow: "#000000",
       },
     },
   },
+
   plugins: [],
 };

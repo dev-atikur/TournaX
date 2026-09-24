@@ -10,6 +10,7 @@ import useAuth from "../hooks/useAuth";
 import userApi from "../api/user.api";
 import tournamentApi from "../api/tournament.api";
 import { extractEntity, extractList } from "../utils/errors";
+import { profilePath } from "../utils/profile";
 import { TOURNAMENT_STATUSES } from "../utils/constants";
 import LeaderboardTable from "../components/Leaderboard/LeaderboardTable";
 import leaderboardApi from "../api/leaderboard.api";
@@ -83,11 +84,11 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <p className="text-sm text-textMuted">
-            {profile?.fullName || profile?.username} · {profile?.ffName} · UID {profile?.ffUid}
+            {profile?.fullName || profile?.username} · {profile?.ffName}
           </p>
         </div>
-        <Link to="/profile" className="text-sm font-semibold text-primary">
-          Edit profile
+        <Link to={profilePath(profile)} className="text-sm font-semibold text-primary">
+          View Profile
         </Link>
       </div>
 

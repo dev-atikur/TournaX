@@ -19,7 +19,6 @@ export default function RegisterPage() {
     username: "",
     email: "",
     ffName: "",
-    ffUid: "",
     password: "",
     confirmPassword: "",
   });
@@ -38,7 +37,6 @@ export default function RegisterPage() {
     if (!formData.username.trim()) next.username = "Username is required.";
     if (!formData.email.trim()) next.email = "Email is required.";
     if (!formData.ffName.trim() || formData.ffName.trim().length < 3) next.ffName = "Free Fire name is required.";
-    if (!formData.ffUid.trim() || formData.ffUid.trim().length < 3) next.ffUid = "Free Fire UID is required.";
     if (!formData.password) next.password = "Password is required.";
     else if (formData.password.length < 6) next.password = "Password must be at least 6 characters.";
     if (formData.password !== formData.confirmPassword) next.confirmPassword = "Passwords do not match.";
@@ -53,7 +51,6 @@ export default function RegisterPage() {
         username: formData.username.trim(),
         email: formData.email.trim(),
         ffName: formData.ffName.trim(),
-        ffUid: formData.ffUid.trim(),
         password: formData.password,
       });
       toast.success("Registration successful. Verify your email.");
@@ -79,18 +76,17 @@ export default function RegisterPage() {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input label="Full Name" name="fullName" value={formData.fullName} onChange={handleChange} error={errors.fullName} leftIcon={<User className="h-4 w-4" />} placeholder="Your name" autoComplete="name" />
-          <Input label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} placeholder="Choose a username" autoComplete="username" />
+          <Input label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} leftIcon={<User className="h-4 w-4" />} placeholder="Choose a username" autoComplete="username" />
           <Input label="Email" name="email" type="email" value={formData.email} onChange={handleChange} error={errors.email} leftIcon={<Mail className="h-4 w-4" />} placeholder="Email" autoComplete="email" />
-          <Input label="Free Fire Name" name="ffName" value={formData.ffName} onChange={handleChange} error={errors.ffName} placeholder="In-game name" />
-          <Input label="Free Fire UID" name="ffUid" value={formData.ffUid} onChange={handleChange} error={errors.ffUid} placeholder="UID" />
-          <Input
-            label="Password"
+          <Input label="Free Fire Name" name="ffName" value={formData.ffName} onChange={handleChange} error={errors.ffName} leftIcon={<User className="h-4 w-4" />} placeholder="In-game name" />
+          <Input label="Password"
             name="password"
             type={showPassword ? "text" : "password"}
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
             leftIcon={<Lock className="h-4 w-4" />}
+            placeholder="Password"
             autoComplete="new-password"
             rightSlot={
               <button type="button" onClick={() => setShowPassword((v) => !v)} aria-label="Toggle password" className="text-textMuted">
@@ -105,6 +101,7 @@ export default function RegisterPage() {
             value={formData.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
+            placeholder="Confirm password"
             leftIcon={<Lock className="h-4 w-4" />}
             autoComplete="new-password"
             rightSlot={

@@ -1,3 +1,19 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+# Googlebot, Bingbot, etc. will NOT crawl these sections
+Disallow: /admin
+Disallow: /auth
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /checkout
+Disallow: /payments
+Disallow: /thank-you
+Disallow: /cancel
+# Other private sections
+Disallow: /wallet
+Disallow: /transactions
+Disallow: /settings
+Disallow: /support
+Disallow: /api

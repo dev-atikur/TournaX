@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Trophy } from "lucide-react";
 import Page from "../components/common/Page";
@@ -15,9 +15,10 @@ import useAuth from "../hooks/useAuth";
 
 export default function TournamentsPage() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const { isAuthenticated } = useAuth();
   const [filters, setFilters] = useState({
-    search: "",
+    search: params.get("search") || "",
     status: "",
     gameMode: "",
     sort: "createdAt",

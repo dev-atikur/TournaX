@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { CalendarDays, Clock3, Coins, MapPin, Users } from "lucide-react";
 import TournamentStatus from "./TournamentStatus";
-import { entityId, formatDateTime, formatMoney } from "../../utils/format";
+import { entityId, formatDateTime, formatMoney, formatStatus } from "../../utils/format";
 import { TOURNAMENT_STATUSES } from "../../utils/constants";
 
 export default function TournamentCard({ tournament, onJoin, joiningId }) {

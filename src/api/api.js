@@ -10,8 +10,7 @@ const api = axios.create({
 
 let refreshPromise = null;
 
-api.interceptors.response.use(
-  (response) => response,
+api.interceptors.response.use((response) => response,
   async (error) => {
     const original = error.config || {};
     const status = error.response?.status;
@@ -41,5 +40,6 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
 
 export default api;

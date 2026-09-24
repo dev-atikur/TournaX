@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import AppLayout from "./layouts/AppLayout";
 import HomePage from "./pages/HomePage";
@@ -16,19 +16,46 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import DashboardPage from "./pages/DashboardPage";
 import MyTournamentsPage from "./pages/MyTournamentsPage";
-import ProfilePage from "./pages/ProfilePage";
+import PublicProfilePage from "./pages/PublicProfilePage";
+import ProfileRedirectPage from "./pages/ProfileRedirectPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import SettingsLayout from "./components/settings/SettingsLayout";
+import AccountSettingsPage from "./pages/settings/AccountSettingsPage";
+import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
+import SecuritySettingsPage from "./pages/settings/SecuritySettingsPage";
+import TwoFactorSettingsPage from "./pages/settings/TwoFactorSettingsPage";
+import SessionsSettingsPage from "./pages/settings/SessionsSettingsPage";
+import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
+import PrivacySettingsPage from "./pages/settings/PrivacySettingsPage";
+import DangerSettingsPage from "./pages/settings/DangerSettingsPage";
+import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminTournamentsPage from "./pages/admin/AdminTournamentsPage";
+import AdminTournamentDetailsPage from "./pages/admin/AdminTournamentDetailsPage";
+import AdminTournamentEditPage from "./pages/admin/AdminTournamentEditPage";
 import AdminMatchesPage from "./pages/admin/AdminMatchesPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminResultsPage from "./pages/admin/AdminResultsPage";
-import ModeratorDashboardPage from "./pages/moderator/ModeratorDashboardPage";
-import ModeratorMatchesPage from "./pages/moderator/ModeratorMatchesPage";
+import AdminReportsPage from "./pages/admin/AdminReportsPage";
+import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import { PrivacyPage, TermsPage, ContactPage } from "./pages/LegalPages";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import AdminRoute from "./components/routes/AdminRoute";
 import ModeratorRoute from "./components/routes/ModeratorRoute";
+
+const staffPages = (
+  <>
+    <Route index element={<AdminDashboardPage />} />
+    <Route path="tournaments" element={<AdminTournamentsPage />} />
+    <Route path="tournaments/:id" element={<AdminTournamentDetailsPage />} />
+    <Route path="tournaments/:id/edit" element={<AdminTournamentEditPage />} />
+    <Route path="matches" element={<AdminMatchesPage />} />
+    <Route path="users" element={<AdminUsersPage />} />
+    <Route path="results" element={<AdminResultsPage />} />
+    <Route path="reports" element={<AdminReportsPage />} />
+    <Route path="settings" element={<AdminSettingsPage />} />
+  </>
+);
 
 function App() {
   const router = createBrowserRouter(
@@ -65,14 +92,26 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="profile" element={<ProfileRedirectPage />} />
+        <Route path="profile/:username" element={<PublicProfilePage />} />
         <Route
-          path="profile"
+          path="settings"
           element={
             <ProtectedRoute>
-              <ProfilePage />
+              <SettingsLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to="account" replace />} />
+          <Route path="account" element={<AccountSettingsPage />} />
+          <Route path="profile" element={<ProfileSettingsPage />} />
+          <Route path="security" element={<SecuritySettingsPage />} />
+          <Route path="2fa" element={<TwoFactorSettingsPage />} />
+          <Route path="sessions" element={<SessionsSettingsPage />} />
+          <Route path="notifications" element={<NotificationsSettingsPage />} />
+          <Route path="privacy" element={<PrivacySettingsPage />} />
+          <Route path="danger" element={<DangerSettingsPage />} />
+        </Route>
         <Route
           path="notifications"
           element={
@@ -85,66 +124,22 @@ function App() {
           path="admin"
           element={
             <AdminRoute>
-              <AdminDashboardPage />
+              <AdminLayout />
             </AdminRoute>
           }
-        />
-        <Route
-          path="admin/tournaments"
-          element={
-            <AdminRoute>
-              <AdminTournamentsPage />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="admin/matches"
-          element={
-            <AdminRoute>
-              <AdminMatchesPage />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="admin/users"
-          element={
-            <AdminRoute>
-              <AdminUsersPage />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="admin/results"
-          element={
-            <AdminRoute>
-              <AdminResultsPage />
-            </AdminRoute>
-          }
-        />
+        >
+          {staffPages}
+        </Route>
         <Route
           path="moderator"
           element={
             <ModeratorRoute>
-              <ModeratorDashboardPage />
+              <AdminLayout />
             </ModeratorRoute>
           }
-        />
-        <Route
-          path="moderator/matches"
-          element={
-            <ModeratorRoute>
-              <ModeratorMatchesPage />
-            </ModeratorRoute>
-          }
-        />
-        <Route
-          path="moderator/results"
-          element={
-            <ModeratorRoute>
-              <AdminResultsPage />
-            </ModeratorRoute>
-          }
-        />
+        >
+          {staffPages}
+        </Route>
       </Route>,
     ),
   );
